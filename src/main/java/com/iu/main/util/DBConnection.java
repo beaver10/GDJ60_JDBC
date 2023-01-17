@@ -21,7 +21,7 @@ public class DBConnection {
 		
 		Connection connection = DriverManager.getConnection(url, username, password);
 		
-		String sql="SELECT * FROM LOCATIONS WHERE LOCATION_ID=1";
+		String sql="SELECT * FROM LOCATIONS WHERE COUNTRY_ID='US'";
 		
 		PreparedStatement st = connection.prepareStatement(sql);
 		
@@ -29,8 +29,8 @@ public class DBConnection {
 		
 		while(rs.next()) {
 			System.out.println(rs.getInt("LOCATION_ID"));
-//			System.out.println(rs.getString("POSTAL_CODE"));
-//			System.out.println(rs.getString("STREET_ADDRESS"));
+			System.out.println(rs.getString("POSTAL_CODE"));
+			System.out.println(rs.getString("STREET_ADDRESS"));
 		}
 		
 	}
