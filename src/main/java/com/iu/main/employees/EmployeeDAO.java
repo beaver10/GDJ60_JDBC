@@ -4,14 +4,18 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import com.iu.main.util.DBConnection;
 
 public class EmployeeDAO {
 	
 	//월급의 평균
-	public void getAvg() throws Exception{
+	public HashMap<String, Double> getAvg() throws Exception{
+		HashMap<String, Double> map = new HashMap<String, Double>();
+		
 		Connection connection = DBConnection.getConnection();
-		String sql ="SELECT AVG(SALARY) AS A, SUM(SALARY) AS B FROM EMPLOYEES";
+		String sql ="SELECT AVG(SALARY)*12+100 AS A, SUM(SALARY) AS B FROM EMPLOYEES";
 		
 		PreparedStatement st = connection.prepareStatement(sql);
 		
@@ -19,24 +23,29 @@ public class EmployeeDAO {
 		
 		rs.next();
 		
+		//1. List, Array
+		//2. DTO(class)
+		//3.Map(Key,Value)
+		
+		map.put("avg", rs.getDouble("A"));
+		map.put("sum", rs.getDouble(2));
+		
 		
 		System.out.println(rs.getDouble("A"));
 		System.out.println(rs.getDouble(2));
 	
 		
 		DBConnection.disConnect(rs, st, connection);
-		
+		return map;
 	}
 	
 	
-	
-	// date에 ? 넣지말고 sysdate
 	
 	//insert
 	public int setData(EmployeeDTO employeeDTO)throws Exception{
 		Connection connection = DBConnection.getConnection();
 		String sql ="INSERT INTO EMPLOYEES (EMPLOYEE_ID, FIRST_NAME, LAST_NAME, SALARY, JOB_ID, COMMISSION_PCT,HIRE_DATE, PHONE_NUMBER, EMAIL)"
-				+ " VALUES (EMPLOYEES_SEQ.NEXTVAL, ?, ?, ?, ?, ?,sysdate,?,?)";
+				+ " VALUES (EMPLOYEES_SEQ.NEXTVAL, ?, ?, ?, ?, ?,?,?,?)";
 		
 		
 		PreparedStatement st = connection.prepareStatement(sql);
@@ -45,7 +54,7 @@ public class EmployeeDAO {
 		st.setDouble(3, employeeDTO.getSalary());
 		st.setString(4, employeeDTO.getJob_id());
 		st.setDouble(5, employeeDTO.getCommission_pct());
-		st.setDate(6, employeeDTO.getHire_date());
+		st.setString(6, employeeDTO.getHire_date());
 		st.setString(7, employeeDTO.getPhone_number());
 		st.setString(8, employeeDTO.getEmail());
 		
@@ -76,7 +85,7 @@ public class EmployeeDAO {
 			employeeDTO.setJob_id(rs.getString("JOB_ID"));
 			employeeDTO.setDepartment_id(rs.getInt("DEPARTMENT_ID"));
 			employeeDTO.setSalary(rs.getDouble("SALARY"));
-			employeeDTO.setHire_date(rs.getDate("HIRE_DATE"));
+			employeeDTO.setHire_date(rs.getString("HIRE_DATE"));
 			
 			ar.add(employeeDTO);
 			
@@ -107,7 +116,7 @@ public class EmployeeDAO {
 			employeeDTO.setLast_name(rs.getString("LAST_NAME"));
 			employeeDTO.setJob_id(rs.getString("JOB_ID"));
 			employeeDTO.setDepartment_id(rs.getInt("DEPARTMENT_ID"));
-			employeeDTO.setHire_date(rs.getDate("HIRE_DATE"));
+			employeeDTO.setHire_date(rs.getString("HIRE_DATE"));
 			
 		}
 		

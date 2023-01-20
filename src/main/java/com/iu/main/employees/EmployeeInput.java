@@ -31,10 +31,12 @@ public class EmployeeInput {
 		System.out.println("추가할 입사일 입력");
 		employeeDTO.setHire_date(sc.next());
 		
+		System.out.println("추가할 핸드폰 번호 입력");
+		employeeDTO.setPhone_number(sc.next());
 		
-		st.setDate(6, employeeDTO.getHire_date());
-		st.setString(7, employeeDTO.getPhone_number());
-		st.setString(8, employeeDTO.getEmail());
+		System.out.println("추가할 이메일 확인 ");
+		employeeDTO.setEmail(sc.next());
+		
 		
 		
 		return employeeDTO;
