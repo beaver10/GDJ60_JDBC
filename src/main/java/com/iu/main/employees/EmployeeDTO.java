@@ -2,6 +2,8 @@ package com.iu.main.employees;
 
 import java.sql.Date;
 
+import com.iu.main.departments.DepartmentDTO;
+
 public class EmployeeDTO {
 	
 	private Integer employee_id;
